@@ -17,6 +17,7 @@ import {
 import LoginnPage from "./login-sigin/Login/LoginnPage";
 
 function ParentComponent() {
+
   return (
     <div data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="117">
       <Routes>
@@ -25,10 +26,9 @@ function ParentComponent() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/detail" element={<DetailPage />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/product" element={<ProductPage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/comments" element={<CommentsPage />} />
       </Routes>
-      
     </div>
   );
 }

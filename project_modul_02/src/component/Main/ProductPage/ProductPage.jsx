@@ -1,70 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ProductPage.css";
+import HeaderPage from "../../Layout/Hearder/HeaderPage";
+import FooterPage from "../../Layout/Footer/FooterPage";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+
 function ProductPage() {
+  const [productItem, setProductsItem] = useState([]);
+  const products = useParams();
+  const id = products.id;
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8888/products/${id}`)
+      .then((res) => setProductsItem(res.data))
+      .catch((err) => console.log("err", err));
+  }, []);
+  console.log(productItem);
+
+  
   return (
     <div>
+      <HeaderPage />
+
       <div className="card-wrapper">
         <div className="card">
           {/* card left */}
           <div className="product-imgs">
             <div className="img-display">
               <div className="img-showcase">
-                <img
-                  src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%201.jpg?alt=media&token=ba019c53-b23e-46f6-b0b2-dfb05fbf57e5"
-                  alt="shoe imagee"
-                />
-                <img
-                  src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%202.jpg?alt=media&token=c3ba2a46-91d7-447a-a3ec-2ce20af3be82"
-                  alt="shoe image"
-                />
-                <img
-                  src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%203.jpg?alt=media&token=3a31cb20-33d3-475e-b91f-de7b74565ed6"
-                  alt="shoe image"
-                />
-                <img
-                  src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%204.jpg?alt=media&token=f5f80419-a1a4-420e-aa0c-afe3efa4e1f2"
-                  alt="shoe image"
-                />
+                <img src="" alt="shoe imagee" />
+                <img src="" alt="shoe image" />
+                <img src="" alt="shoe image" />
+                <img src="" alt="shoe image" />
               </div>
             </div>
             <div className="img-select">
               <div className="img-item">
                 <a href="#">
-                  <img
-                    src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%201.jpg?alt=media&token=ba019c53-b23e-46f6-b0b2-dfb05fbf57e5"
-                    alt="shoe image"
-                  />
+                  <img src="" alt="shoe image" />
                 </a>
               </div>
               <div className="img-item">
                 <a href="#">
-                  <img
-                    src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%202.jpg?alt=media&token=c3ba2a46-91d7-447a-a3ec-2ce20af3be82"
-                    alt="shoe image"
-                  />
+                  <img src="" alt="shoe image" />
                 </a>
               </div>
               <div className="img-item">
                 <a href="#">
-                  <img
-                    src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%203.jpg?alt=media&token=3a31cb20-33d3-475e-b91f-de7b74565ed6"
-                    alt="shoe image"
-                  />
+                  <img src="" alt="shoe image" />
                 </a>
               </div>
               <div className="img-item">
                 <a href="#">
-                  <img
-                    src="https://firebasestorage.googleapis.com/v0/b/fir-upload-img-ea911.appspot.com/o/pho%20mai%20ga%20quay%204.jpg?alt=media&token=f5f80419-a1a4-420e-aa0c-afe3efa4e1f2"
-                    alt="shoe image"
-                  />
+                  <img src='' alt="shoe image" />
                 </a>
               </div>
             </div>
           </div>
           {/* card right */}
           <div className="product-content">
-            <h2 className="product-title">Phô mai chà bông</h2>
+            <h2 className="product-title"></h2>
             <a href="#" className="product-link">
               natra food
             </a>
@@ -78,10 +73,10 @@ function ProductPage() {
             </div>
             <div className="product-price">
               <p className="last-price">
-                Giá gốc: <span>25.000 đ</span>
+                Giá gốc: <span> đ</span>
               </p>
               <p className="new-price">
-                Giá khuyến mãi: <span>19.990 đ (13%)</span>
+                Giá khuyến mãi: <span> đ (13%)</span>
               </p>
             </div>
             <div className="product-detail">
@@ -155,6 +150,7 @@ function ProductPage() {
           </div>
         </div>
       </div>
+      <FooterPage />
     </div>
   );
 }

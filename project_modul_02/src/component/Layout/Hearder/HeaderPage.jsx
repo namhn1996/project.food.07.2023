@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "./Header.css";
 import axios from "axios";
+import "./style.css";
 
 function HeaderPage() {
   const userLogin = JSON.parse(localStorage.getItem("userLogin"));
@@ -13,6 +14,11 @@ function HeaderPage() {
     localStorage.setItem("userLogin", JSON.stringify(""));
     localStorage.setItem("userStatus", JSON.stringify(false));
     window.location.reload();
+  };
+  const handleCart = () => {
+    userStatus == true
+      ? (window.location.href = "/cart")
+      : alert("Chưa đăng nhập");
   };
   return (
     <div>
@@ -53,6 +59,7 @@ function HeaderPage() {
             <div className="d-flex align-items-center justify-content-center shop">
               <div className="shooping me-5 d-none d-lg-inline-block">
                 <i
+                  onClick={handleCart}
                   type="button"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"

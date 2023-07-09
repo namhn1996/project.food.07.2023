@@ -2,14 +2,14 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import HeaderPage from "../../Layout/Hearder/HeaderPage";
 import FooterPage from "../../Layout/Footer/FooterPage";
-
+import "./style.css";
 function HomePage() {
   useEffect(() => {});
   return (
     <div>
       <HeaderPage />
-      <section className="home text-center" id="home">
-        <div className="container">
+      <section className="home text-center" id="home" style={{marginTop: "100px"}}>
+        <div className="container ">
           <div className="row justify-content-center align-items-center">
             <div className="col-lg-6">
               <div className="home__info text-lg-start mb-5 mb-lg-0">
