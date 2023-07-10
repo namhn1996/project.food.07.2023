@@ -5,8 +5,7 @@ import axios from "axios";
 import "./Detail.css";
 function DetailPage() {
   const [product, setProduct] = useState([]);
-  const [userLogin, setUserLogin] = useState([]);
-
+  const [status, setStatus] = useState(true);
   useEffect(async () => {
     await axios
       .get("http://localhost:8888/products")
@@ -17,14 +16,36 @@ function DetailPage() {
   const handleProduct = (id) => {
     window.location.href = `/product/${id}`;
   };
+
+  const [cart, setCart] = useState([]);
   const userLogins = JSON.parse(localStorage.getItem("userLogin"));
 
-  const handleCart = (item) => {
-    const count = 1;
-    item.count = count;
-    console.log(item);
-    userLogins.cart.push(item);
-    localStorage.setItem("userLogin", JSON.stringify(userLogins), []);
+  useEffect(() => {
+    const userLogins = JSON.parse(localStorage.getItem("userLogin"));
+    if (userLogins && userLogins.id) {
+      axios
+        .get(`http://localhost:8888/users/${userLogins.id}`)
+        .then((res) => setCart(res.data.cart))
+        .catch((err) => console.log(err));
+    }
+  }, [status]);
+
+  const handleCart = async (item) => {
+    const existingProduct = cart.find((product) => product.id === item.id);
+    if (existingProduct) {
+      alert("Sản phẩm đã có trong giỏ hàng");
+    } else {
+      const updatedCart = [...cart, { ...item, count: 1 }];
+      try {
+        await axios.patch(`http://localhost:8888/users/${userLogins.id}`, {
+          cart: updatedCart,
+        });
+        setStatus(!status);
+      } catch (error) {
+        console.log(error);
+      }
+      alert(`Đã thêm ${item.name} vào giỏ hàng`);
+    }
   };
 
   return (
@@ -99,7 +120,7 @@ function DetailPage() {
                             className="basket"
                             onClick={() =>
                               window.confirm(
-                                "Bạn có đồng ý thêm sản phẩm này vào giỏ hàng?"
+                                "Bạn có đồng ý thêm sản phẩm này vào giỏ hàng? Máy chủ hơi cùi xin quý khách thêm từ từ !!!"
                               ) && handleCart(item)
                             }
                           >
