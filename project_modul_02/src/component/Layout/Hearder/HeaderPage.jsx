@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "./Header.css";
 import axios from "axios";
-import "./style.css";
 
 function HeaderPage() {
   const userLogin = JSON.parse(localStorage.getItem("userLogin"));
   const userStatus = JSON.parse(localStorage.getItem("userStatus"));
-
+  const [userLogins, setUserLogins] = useState([]);
+  useEffect(async () => {
+    if (userLogin && userLogin.user.id) {
+      await axios
+        .get(`http://localhost:8888/users/${userLogin.user.id}`)
+        .then((res) => {
+          setUserLogins(res.data);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
+  }, []);
   const handleLogout = async () => {
-    await axios.patch(`http://localhost:8888/users/${userLogin.id}`);
+    await axios.patch(`http://localhost:8888/users/${userLogin.user.id}`);
 
     localStorage.setItem("userLogin", JSON.stringify(""));
     localStorage.setItem("userStatus", JSON.stringify(false));
@@ -19,6 +30,7 @@ function HeaderPage() {
     userStatus == true
       ? (window.location.href = "/cart")
       : alert("Chưa đăng nhập");
+    
   };
   return (
     <div>
@@ -50,11 +62,6 @@ function HeaderPage() {
                   Thực đơn
                 </Link>
               </li>
-              <li className="nav-item">
-                <a className="nav-link mb-2 mb-md-0" href="">
-                  Cửa hàng
-                </a>
-              </li>
             </ul>
             <div className="d-flex align-items-center justify-content-center shop">
               <div className="shooping me-5 d-none d-lg-inline-block">
@@ -65,22 +72,23 @@ function HeaderPage() {
                   data-bs-target="#exampleModal"
                   className="fa-solid fa-cart-shopping"
                 />
+                <span className="cart-count">
+                  {userLogins.cart ? userLogins.cart.length : ''}
+                </span>
               </div>
-              <li className="nav-item">
+              <li className="nav-item ">
                 {userStatus == true ? (
-                  <li>
-                    <div className="profile">
-                      <img src="./img/1.png" alt="Profile Picture" />
-                      <p>Xin chào, {userLogin.name}</p>
+                  <div className="profile" style={{ display: "flex" }}>
+                    <img src="./img/1.png" alt="Profile Picture" />
+                    <p>Xin chào, {userLogin.user.name}</p>
 
-                      <button
-                        onClick={handleLogout}
-                        className="main-btn my-4 my-lg-0 logout-btn"
-                      >
-                        Đăng xuất
-                      </button>
-                    </div>
-                  </li>
+                    <button
+                      onClick={handleLogout}
+                      className="main-btn my-4 my-lg-0 logout-btn"
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
                 ) : (
                   <Link to="/login" className="main-btn my-4 my-lg-0">
                     Đăng nhập

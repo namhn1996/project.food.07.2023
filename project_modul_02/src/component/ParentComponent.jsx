@@ -14,10 +14,12 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import LoginnPage from "./login-sigin/Login/LoginnPage";
+import AdminHome from "./admin/Main/AdminHome";
+import AdminUser from "./admin/Main/AdminUser";
+import AdminProducts from "./admin/Main/AdminProducts";
+import AdminCart from "./admin/Main/AdminCart";
 
 function ParentComponent() {
-
   return (
     <div data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="117">
       <Routes>
@@ -28,7 +30,12 @@ function ParentComponent() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/comments" element={<CommentsPage />} />
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/aduser" element={<AdminUser />} />
+        <Route path="/adproducts" element={<AdminProducts />} />
+        <Route path="/adcart" element={<AdminCart />} />
       </Routes>
+      
     </div>
   );
 }

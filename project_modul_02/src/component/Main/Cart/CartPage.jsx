@@ -3,25 +3,31 @@ import "./Cart.css";
 import HeaderPage from "../../Layout/Hearder/HeaderPage";
 import FooterPage from "../../Layout/Footer/FooterPage";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+
 function CartPage() {
   const [cart, setCart] = useState([]);
+  const [user, setUser] = useState({});
+  const userLogins = JSON.parse(localStorage.getItem("userLogin"));
 
   useEffect(() => {
-    const userLogins = JSON.parse(localStorage.getItem("userLogin"));
-    if (userLogins && userLogins.id) {
+    if (userLogins && userLogins.user.id) {
       axios
-        .get(`http://localhost:8888/users/${userLogins.id}`)
-        .then((res) => setCart(res.data.cart))
+        .get(`http://localhost:8888/users/${userLogins.user.id}`)
+        .then((res) => {
+          setUser(res.data);
+          setCart(res.data.cart);
+        })
         .catch((err) => console.log(err));
     }
   }, []);
-  console.log(cart);
+
   const sum = cart.reduce((total, item) => total + item.price * item.count, 0);
   const sumVnd = sum.toLocaleString("vi-VN");
   const tax = (sum * 5) / 100;
   const handlePre = (id) => {
     setCart((prevCart) => {
-      return prevCart.map((item) => {
+      const newCart = prevCart.map((item) => {
         if (item.id === id) {
           const newCount = item.count - 1;
           if (newCount < 1) {
@@ -34,11 +40,25 @@ function CartPage() {
         }
         return item;
       });
+
+      axios
+        .patch(`http://localhost:8888/users/${userLogins.user.id}`, {
+          cart: newCart, // Cập nhật giá trị mới của cart
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+
+      return newCart;
     });
   };
+
   const handlePlus = (id) => {
     setCart((prevCart) => {
-      return prevCart.map((item) => {
+      const newCart = prevCart.map((item) => {
         if (item.id === id) {
           const newCount = item.count + 1;
           if (newCount > item.limit) {
@@ -51,16 +71,49 @@ function CartPage() {
         }
         return item;
       });
+
+      axios
+        .patch(`http://localhost:8888/users/${userLogins.user.id}`, {
+          cart: newCart, // Cập nhật giá trị mới của cart
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+
+      return newCart;
     });
   };
   const handleRemove = (id) => {
-    setCart((prevCart) => {
-      console.log(prevCart);
-      return prevCart.filter((item) => item.id !== id);
-      
-    });
+    const deleteCart = cart.filter((item) => item.id !== id);
+    setCart(deleteCart);
+    axios
+      .patch(`http://localhost:8888/users/${userLogins.user.id}`, {
+        cart: deleteCart,
+      })
+      .then(() => {
+        alert("xóa thành công");
+      })
+      .catch((err) => {
+        alert("xóa thất bại");
+      });
   };
-  console.log(cart);
+  const handleSubmitCart = () => {
+    axios
+      .patch(`http://localhost:8888/users/${userLogins.user.id}`, {
+        oders: [...user.oders, cart],
+        cart: [],
+      })
+      .then(() => {
+        alert("thanh toán thành công");
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert("thanh toán thất bại");
+      });
+  };
   return (
     <div>
       <HeaderPage />
@@ -76,36 +129,46 @@ function CartPage() {
         </header>
         <div className="container">
           <section id="cart">
-            {cart.map((item) => (
-              <article className="product" key={item.id}>
-                <header>
-                  <a className="remove" onClick={() => handleRemove(item.id)}>
-                    <img src={item.image[2]} alt="Gamming Mouse" />
-                    <h3>Xóa Sản phẩm</h3>
-                  </a>
-                </header>
-                <div className="content">
-                  <h1>{item.name}</h1>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Soluta, numquam quis perspiciatis ea ad omnis provident
-                  laborum dolore in atque.
-                </div>
-                <footer className="content">
-                  <span className="qt-minus" onClick={() => handlePre(item.id)}>
-                    -
-                  </span>
-                  <span className="qt">{item.count}</span>
-                  <span className="qt-plus" onClick={() => handlePlus(item.id)}>
-                    +
-                  </span>
-                  <span className="storge"> Kho hàng :{item.limit}</span>
-                  <h2 className="full-price">
-                    {(item.price * item.count).toLocaleString("vi-VN")} đ
-                  </h2>
-                  {/* <h2 className="price">14.99€</h2> */}
-                </footer>
-              </article>
-            ))}
+            {cart ? (
+              cart.map((item) => (
+                <article className="product" key={item.id}>
+                  <header>
+                    <a className="remove" onClick={() => handleRemove(item.id)}>
+                      <img src={item.image[2]} alt="Gamming Mouse" />
+                      <h3>Xóa Sản phẩm</h3>
+                    </a>
+                  </header>
+                  <div className="content">
+                    <h1>{item.name}</h1>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Soluta, numquam quis perspiciatis ea ad omnis provident
+                    laborum dolore in atque.
+                  </div>
+                  <footer className="content">
+                    <span
+                      className="qt-minus"
+                      onClick={() => handlePre(item.id)}
+                    >
+                      -
+                    </span>
+                    <span className="qt">{item.count}</span>
+                    <span
+                      className="qt-plus"
+                      onClick={() => handlePlus(item.id)}
+                    >
+                      +
+                    </span>
+                    <span className="storge"> Kho hàng :{item.limit}</span>
+                    <h2 className="full-price">
+                      {(item.price * item.count).toLocaleString("vi-VN")} đ
+                    </h2>
+                    {/* <h2 className="price">14.99€</h2> */}
+                  </footer>
+                </article>
+              ))
+            ) : (
+              <h1 style={{ textAlign: "center" }}>Giỏ hàng rỗng</h1>
+            )}
           </section>
         </div>
         <footer id="site-footer">
@@ -125,7 +188,9 @@ function CartPage() {
               <h1 className="total">
                 Tổng cộng: <span>{(sum + tax).toLocaleString("vi-VN")}</span>đ
               </h1>
-              <a className="btn">Đặt hàng</a>
+              <button onClick={handleSubmitCart} className="btn btn-danger">
+                Đặt hàng
+              </button>
             </div>
           </div>
         </footer>

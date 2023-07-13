@@ -217,6 +217,7 @@ form.sign-in-form {
   transition: transform 1.1s ease-in-out;
   transition-delay: 0.4s;
 }
+
 .panel {
   display: flex;
   flex-direction: column;
@@ -330,12 +331,12 @@ form.sign-in-form {
 .contai.sign-up-mode .right-panel {
   pointer-events: all;
 }
-.alert{
+.alert {
   width: 170px;
   z-index: 1;
   margin-left: 350%;
 }
-.checkbox{
+.checkbox {
   width: 190px;
   z-index: 1;
   margin-left: 209px;

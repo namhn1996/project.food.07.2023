@@ -64,6 +64,9 @@ function SiginPage({ setIsSignIn }) {
     address: "",
     password: "",
     confirmPassword: "",
+    cart: [],
+    status: true,
+    oders: [],
   });
   const { name, email, phone, address, password, confirmPassword } = user;
 

@@ -1,0 +1,44 @@
+footer {
+    padding-top: 6rem;
+    margin-top: 5rem;
+    background-color: #fff9f1;
+  }
+  footer .logo {
+    color: #232323 !important;
+  }
+  footer p {
+    font-size: 1.3rem;
+    color: #383433;
+  }
+  footer form {
+    height: 5rem;
+    background-color: black;
+  }
+  footer form input[type=email] {
+    font-size: 1.4rem;
+    padding: 1rem;
+    background-color: #f3ede5;
+  }
+  footer form input[type=submit] {
+    background-color: #ff9302;
+    color: #fff;
+    font-size: 1.4rem;
+    letter-spacing: 0.2rem;
+    padding: 1rem;
+  }
+  footer ul h5 {
+    font-size: 1.7rem;
+    color: #232323;
+  }
+  footer ul a {
+    font-size: 1.3rem;
+    color: #383433 !important;
+    margin-bottom: 1rem;
+  }
+  footer .footer-bottom h2 {
+    font-size: 1.4rem;
+    margin: 3rem 0 1rem;
+  }
+  footer .footer-bottom h2 span {
+    color: #ff9302;
+  }

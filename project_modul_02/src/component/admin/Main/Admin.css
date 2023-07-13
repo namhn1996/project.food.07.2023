@@ -1,0 +1,107 @@
+
+body {
+  margin-top: 20px;
+}
+.fa-fw {
+  width: 2em;
+}
+.container-sm {
+  position: relative;
+}
+video {
+  position: absolute;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+.navv li {
+  cursor: pointer;
+  font-size: 1.6em;
+}
+.navv{
+  
+}
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.color {
+  color: red;
+}
+.well h1 {
+  text-align: center;
+}
+.main-form {
+  width: 500px;
+}
+.main-form .inputform {
+  width: 400px;
+}
+.taobtn {
+  text-align: center;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+th {
+  background-color: #c9c9c9;
+  border: 1px solid #bebebe;
+  padding: 8px;
+  text-align: center;
+}
+
+td {
+  border: 1px solid #c4c4c4;
+  padding: 8px;
+  text-align: center;
+  background-color: #f7f7f7;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.btn-submit {
+  background-color: wheat;
+}
+.imgsp {
+  width: 65px;
+  height: 65px;
+}
+.imgItem {
+  display: flex;
+  justify-content: space-around;
+}
+.service .form-add {
+  display: flex;
+  width: 100%;
+}
+.service .form-add #main-form {
+  width: 100%;
+}
+.service .form-add #main-form input {
+  width: 100%;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.281);
+  border-radius: 10px;
+}
+.service .form-add #main-form label {
+  font-size: 15px;
+  margin-top: 10px;
+}
+.service .form-add #main-form button {
+  width: 100%;
+  background-color: rgba(22, 120, 199, 0.753);
+  color: white;
+  margin: 30px 0;
+  line-height: 30px;
+}

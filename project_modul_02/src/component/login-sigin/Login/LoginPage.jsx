@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "../style.css";
 import SiginPage from "../Sigin/SiginPage";
 import register from "./img/register.svg";
@@ -20,11 +20,14 @@ function LoginPage() {
         <div className="forms-container">
           <div className="signin-signup">
             <LoginnPage />
-            <SiginPage setIsSignIn={setIsSignIn}/>
+            <SiginPage setIsSignIn={setIsSignIn} />
           </div>
         </div>
         <div className="panels-container">
-          <div className="panel left-panel">
+          <div
+            className="panel left-panel"
+            style={{ backgroundColor: "transparent" }}
+          >
             <div className="content">
               <h3>Bạn chưa có tài khoản ?</h3>
               <p>
@@ -41,7 +44,10 @@ function LoginPage() {
             </div>
             <img src={register} className="image" alt="Register" />
           </div>
-          <div className="panel right-panel">
+          <div
+            className="panel right-panel"
+            style={{ backgroundColor: "transparent" }}
+          >
             <div className="content">
               <h3>Bạn đã có tài khoản ?</h3>
               <p>Hãy đăng nhập ngay để sử dụng các dịch vụ của cửa hàng.</p>

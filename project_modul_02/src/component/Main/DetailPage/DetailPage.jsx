@@ -6,8 +6,8 @@ import "./Detail.css";
 function DetailPage() {
   const [product, setProduct] = useState([]);
   const [status, setStatus] = useState(true);
-  useEffect(async () => {
-    await axios
+  useEffect(() => {
+    axios
       .get("http://localhost:8888/products")
       .then((res) => setProduct(res.data))
       .catch((err) => console.log("err", err));
@@ -22,9 +22,9 @@ function DetailPage() {
 
   useEffect(() => {
     const userLogins = JSON.parse(localStorage.getItem("userLogin"));
-    if (userLogins && userLogins.id) {
+    if (userLogins.user && userLogins.user.id) {
       axios
-        .get(`http://localhost:8888/users/${userLogins.id}`)
+        .get(`http://localhost:8888/users/${userLogins.user.id}`)
         .then((res) => setCart(res.data.cart))
         .catch((err) => console.log(err));
     }
@@ -36,13 +36,14 @@ function DetailPage() {
       alert("Sản phẩm đã có trong giỏ hàng");
     } else {
       const updatedCart = [...cart, { ...item, count: 1 }];
+      console.log(updatedCart);
       try {
-        await axios.patch(`http://localhost:8888/users/${userLogins.id}`, {
+        await axios.patch(`http://localhost:8888/users/${userLogins.user.id}`, {
           cart: updatedCart,
         });
         setStatus(!status);
       } catch (error) {
-        console.log(error);
+        console.log("pacth", error);
       }
       alert(`Đã thêm ${item.name} vào giỏ hàng`);
     }

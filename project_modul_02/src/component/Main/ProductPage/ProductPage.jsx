@@ -7,17 +7,31 @@ import axios from "axios";
 
 function ProductPage() {
   const [productItem, setProductsItem] = useState([]);
-  const products = useParams();
-  const id = products.id;
+  const [showProductImgs, setShowProductImgs] = useState(false);
+  const [count, setCount] = useState("");
+  const [cart, setCart] = useState([]);
+  const userLogins = JSON.parse(localStorage.getItem("userLogin"));
+  const { id } = useParams();
+
   useEffect(() => {
     axios
       .get(`http://localhost:8888/products/${id}`)
       .then((res) => setProductsItem(res.data))
       .catch((err) => console.log("err", err));
-  }, []);
+    const userLogins = JSON.parse(localStorage.getItem("userLogin"));
+    if (userLogins.user && userLogins.user.id) {
+      axios
+        .get(`http://localhost:8888/users/${userLogins.user.id}`)
+        .then((res) => setCart(res.data.cart))
+        .catch((err) => console.log(err));
+    }
+  }, [id]);
   console.log(productItem);
+  const handleImgSelectClick = () => {
+    setShowProductImgs(!showProductImgs);
+  };
+  console.log(count);
 
-  
   return (
     <div>
       <HeaderPage />
@@ -26,40 +40,45 @@ function ProductPage() {
         <div className="card">
           {/* card left */}
           <div className="product-imgs">
-            <div className="img-display">
-              <div className="img-showcase">
-                <img src="" alt="shoe imagee" />
-                <img src="" alt="shoe image" />
-                <img src="" alt="shoe image" />
-                <img src="" alt="shoe image" />
+            {productItem.image && (
+              <div className="img-display">
+                <div className="img-showcase">
+                  <img src={productItem.image[0]} alt="shoe imagee" />
+                  <img src={productItem.image[1]} alt="shoe image" />
+                  <img src={productItem.image[2]} alt="shoe image" />
+                  <img src={productItem.image[3]} alt="shoe image" />
+                </div>
               </div>
-            </div>
-            <div className="img-select">
-              <div className="img-item">
-                <a href="#">
-                  <img src="" alt="shoe image" />
-                </a>
+            )}
+
+            {productItem.image && (
+              <div className="img-select">
+                <div className="img-item" onClick={handleImgSelectClick}>
+                  <a href="#">
+                    <img src={productItem.image[0]} alt="shoe image" />
+                  </a>
+                </div>
+                <div className="img-item" onClick={handleImgSelectClick}>
+                  <a href="#">
+                    <img src={productItem.image[1]} alt="shoe image" />
+                  </a>
+                </div>
+                <div className="img-item" onClick={handleImgSelectClick}>
+                  <a href="#">
+                    <img src={productItem.image[2]} alt="shoe image" />
+                  </a>
+                </div>
+                <div className="img-item" onClick={handleImgSelectClick}>
+                  <a href="#">
+                    <img src={productItem.image[3]} alt="shoe image" />
+                  </a>
+                </div>
               </div>
-              <div className="img-item">
-                <a href="#">
-                  <img src="" alt="shoe image" />
-                </a>
-              </div>
-              <div className="img-item">
-                <a href="#">
-                  <img src="" alt="shoe image" />
-                </a>
-              </div>
-              <div className="img-item">
-                <a href="#">
-                  <img src='' alt="shoe image" />
-                </a>
-              </div>
-            </div>
+            )}
           </div>
           {/* card right */}
           <div className="product-content">
-            <h2 className="product-title"></h2>
+            <h2 className="product-title">{productItem.name}</h2>
             <a href="#" className="product-link">
               natra food
             </a>
@@ -73,10 +92,7 @@ function ProductPage() {
             </div>
             <div className="product-price">
               <p className="last-price">
-                Giá gốc: <span> đ</span>
-              </p>
-              <p className="new-price">
-                Giá khuyến mãi: <span> đ (13%)</span>
+                Giá sản phẩm: <span> {productItem.price} đ</span>
               </p>
             </div>
             <div className="product-detail">
@@ -116,17 +132,35 @@ function ProductPage() {
               <label htmlFor="">
                 <b>Số lượng :</b>
               </label>
-              <input type="number" min={0} defaultValue={1} />
+              <input
+                type="number"
+                min={0}
+                defaultValue={1}
+                onChange={(e) => setCount(e.target.value)}
+              />
               <span>
                 {" "}
-                <b>Kho hàng :</b> 99
+                <b>Kho hàng :</b> {productItem.limit}
               </span>{" "}
               <br />
-              <button type="button" className="btn">
+              <button
+                type="button"
+                className="btn"
+                style={{ width: "70%" }}
+                onClick={() =>
+                  window.confirm(
+                    "Bạn có đồng ý thêm sản phẩm này vào giỏ hàng"
+                  ) &&
+                  cart.push({
+                    id: productItem.id,
+                    name: productItem.name,
+                    image: productItem.image,
+                    price: productItem.price,
+                    count: count,
+                  })
+                }
+              >
                 <i className="fas fa-shopping-cart" /> Thêm vào giỏ hàng
-              </button>
-              <button type="button" className="btn">
-                Mua ngay
               </button>
             </div>
             <div className="social-links">
